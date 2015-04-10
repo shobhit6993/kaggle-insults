@@ -56,7 +56,7 @@ for row in csvr:
 #results = n.classify(texts)
 #results[results<0] = 0
 #print calculate_auc(classes, results)
-r1 = m1.classify(texts)
+r1 = np.array(m1.classify(texts))
 print calculate_auc(classes, r1)
 r2 = np.array(m2.classify(texts))
 print calculate_auc(classes, r2)
@@ -75,7 +75,7 @@ texts = []
 csvr = csv.reader(open('test.csv', 'rb'), delimiter=',', quotechar='"')
 csvr.next()
 for row in csvr:
-    texts.append(row[1].decode('utf8'))
+    texts.append(row[2].decode('utf8'))
 results = n.classify(texts)
 
 

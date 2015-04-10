@@ -24,9 +24,8 @@ class ChSVM(object):
     def classify(self, texts):
         vectors = self.dictionary.feature_vectors(texts)
         predictions = self.svm.decision_function(vectors)
-        predictions = np.transpose(predictions)[0]
+        predictions = np.transpose(predictions)
         predictions = predictions / 2 + 0.5
-        predictions[predictions > 1] = 1
-        predictions[predictions < 0] = 0
+        predictions = map(lambda x: 1 if x>1 else (0 if x<0 else x),predictions)
         return predictions
         
