@@ -21,7 +21,7 @@ from sgdc import SGDC
 
 texts = []
 classes = []
-csvr = csv.reader(open('train.csv', 'rb'), delimiter=',', quotechar='"')
+csvr = csv.reader(open('./dataset/train.csv', 'rb'), delimiter=',', quotechar='"')
 csvr.next()
 for row in csvr:
     texts.append(row[2].decode('utf8'))
@@ -48,7 +48,7 @@ m2 = Dictionary(texts, classes)
  
 texts = []
 classes = []
-csvr = csv.reader(open('test_with_solutions.csv', 'rb'), delimiter=',', quotechar='"')
+csvr = csv.reader(open('./dataset/test_with_solutions.csv', 'rb'), delimiter=',', quotechar='"')
 csvr.next()
 for row in csvr:
     texts.append(row[2].decode('utf8'))
@@ -72,7 +72,7 @@ n = Ensemble(texts, classes, nn_params, models)
 
 
 texts = []
-csvr = csv.reader(open('test.csv', 'rb'), delimiter=',', quotechar='"')
+csvr = csv.reader(open('./dataset/test.csv', 'rb'), delimiter=',', quotechar='"')
 csvr.next()
 for row in csvr:
     texts.append(row[2].decode('utf8'))

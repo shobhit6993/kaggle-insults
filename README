@@ -1,7 +1,7 @@
 run code from main.py
 
-for training, this uses train.csv and test_with_solutions.csv
-test data must be in test.csv
+for training, this uses ./dataset/train.csv and ./dataset/test_with_solutions.csv
+test data must be in ./dataset/test.csv
 results will be in rez.csv
 
 code needs python 2.7, scikit-learn 0.12 (along with numpy, scipy, ..),
