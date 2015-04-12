@@ -20,6 +20,7 @@ from nlpdictch import NLPDictCh
 from sgdc import SGDC
 import sys
 import time
+import signal
 
 start = time.time()
 texts = []
@@ -79,37 +80,14 @@ start = time.time()
 
 # evaluate the classfier on verification dataset
 texts = []
-classes = []
-csvr = csv.reader(open('./dataset/test_with_solutions.csv', 'rb'), delimiter=',', quotechar='"')
-csvr.next()
-for row in csvr:
-    texts.append(row[2].decode('utf8'))
-    classes.append(int(row[0]))
+inp = raw_input()
+while inp:
+	texts.append(inp.decode('utf8'))
+	inp = raw_input()
+
 results = n.classify(texts)
 
-
-results[results<0] = 0
-results[results>1] = 1
-print sys.argv[1]+" --- "+`calculate_auc(classes,results)`
-end = time.time()
-# print "classification time="
-# print end-start
-# writer = open('rez.csv', 'w')
-# for r in results:
-#     writer.write('%s\n' % r)
-# writer.close()
+print results
 
 
-
-
-# wrongs = []
-# for i in range(len(texts)):
-#     if abs(classes[i] - results[i]) > 0.5:
-#         wrongs.append((classes[i], results[i], texts[i]))
-
-# import csv
-# writer = open('wrongs.csv', 'w')
-# for w in wrongs:
-#     writer.write('%s,%s,%s\n' % w)
-# writer.close()
 
