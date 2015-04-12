@@ -43,9 +43,34 @@ models = ( \
 nn_params = {'epochs': 100, 'structure': [3, 1]}
 #n = Ensemble(texts, classes, nn_params, models)
  
-m1 = ChSVM(texts, classes)
-m2 = Dictionary(texts, classes)
+# m1 = ChSVM(texts, classes)
+# m2 = Dictionary(texts, classes)
  
+# texts = []
+# classes = []
+# csvr = csv.reader(open('./dataset/test_with_solutions.csv', 'rb'), delimiter=',', quotechar='"')
+# csvr.next()
+# for row in csvr:
+#     texts.append(row[2].decode('utf8'))
+#     classes.append(int(row[0]))
+# #results = n.classify(texts)
+# #results[results<0] = 0
+# #print calculate_auc(classes, results)
+# r1 = np.array(m1.classify(texts))
+# print calculate_auc(classes, r1)
+# r2 = np.array(m2.classify(texts))
+# print calculate_auc(classes, r2)
+# r = (1.2*r1 + 0.8*r2) / 2
+# r[r>1] = 1
+# r[r<0] = 0
+# print calculate_auc(classes, r)
+  
+#print TestSVM.test_model(texts, classes, models[-1])
+#print TestSVM.test(texts, classes, models, nn_params)
+n = Ensemble(texts, classes, nn_params, models)
+
+
+# evaluate the classfier on verification dataset
 texts = []
 classes = []
 csvr = csv.reader(open('./dataset/test_with_solutions.csv', 'rb'), delimiter=',', quotechar='"')
@@ -53,34 +78,13 @@ csvr.next()
 for row in csvr:
     texts.append(row[2].decode('utf8'))
     classes.append(int(row[0]))
-#results = n.classify(texts)
-#results[results<0] = 0
-#print calculate_auc(classes, results)
-r1 = np.array(m1.classify(texts))
-print calculate_auc(classes, r1)
-r2 = np.array(m2.classify(texts))
-print calculate_auc(classes, r2)
-r = (1.2*r1 + 0.8*r2) / 2
-r[r>1] = 1
-r[r<0] = 0
-print calculate_auc(classes, r)
-  
-#print TestSVM.test_model(texts, classes, models[-1])
-#print TestSVM.test(texts, classes, models, nn_params)
-n = Ensemble(texts, classes, nn_params, models)
-
-
-
-texts = []
-csvr = csv.reader(open('./dataset/test.csv', 'rb'), delimiter=',', quotechar='"')
-csvr.next()
-for row in csvr:
-    texts.append(row[2].decode('utf8'))
 results = n.classify(texts)
 
 
 results[results<0] = 0
 results[results>1] = 1
+print calculate_auc(classes,results)
+
 writer = open('rez.csv', 'w')
 for r in results:
     writer.write('%s\n' % r)
@@ -88,7 +92,7 @@ writer.close()
 
 
 
-'''
+
 wrongs = []
 for i in range(len(texts)):
     if abs(classes[i] - results[i]) > 0.5:
@@ -99,4 +103,4 @@ writer = open('wrongs.csv', 'w')
 for w in wrongs:
     writer.write('%s,%s,%s\n' % w)
 writer.close()
-'''
+
