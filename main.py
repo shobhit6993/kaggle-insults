@@ -18,7 +18,10 @@ from auc import calculate_auc
 from nlp_dict import NLPDict
 from nlpdictch import NLPDictCh
 from sgdc import SGDC
+import sys
+import time
 
+start = time.time()
 texts = []
 classes = []
 csvr = csv.reader(open('./dataset/train.csv', 'rb'), delimiter=',', quotechar='"')
@@ -40,7 +43,7 @@ models = ( \
 #    (DictRFC, ()), \
 )
 
-nn_params = {'epochs': 100, 'structure': [3, 1]}
+nn_params = {'epochs': int(sys.argv[1]), 'structure': [3, 1]}
 #n = Ensemble(texts, classes, nn_params, models)
  
 # m1 = ChSVM(texts, classes)
@@ -68,7 +71,11 @@ nn_params = {'epochs': 100, 'structure': [3, 1]}
 #print TestSVM.test_model(texts, classes, models[-1])
 #print TestSVM.test(texts, classes, models, nn_params)
 n = Ensemble(texts, classes, nn_params, models)
+end = time.time()
+print "training time="
+print end-start
 
+start = time.time()
 
 # evaluate the classfier on verification dataset
 texts = []
@@ -83,24 +90,26 @@ results = n.classify(texts)
 
 results[results<0] = 0
 results[results>1] = 1
-print calculate_auc(classes,results)
+print sys.argv[1]+" --- "+`calculate_auc(classes,results)`
+end = time.time()
+print "classification time="
+print end-start
+# writer = open('rez.csv', 'w')
+# for r in results:
+#     writer.write('%s\n' % r)
+# writer.close()
 
-writer = open('rez.csv', 'w')
-for r in results:
-    writer.write('%s\n' % r)
-writer.close()
 
 
 
+# wrongs = []
+# for i in range(len(texts)):
+#     if abs(classes[i] - results[i]) > 0.5:
+#         wrongs.append((classes[i], results[i], texts[i]))
 
-wrongs = []
-for i in range(len(texts)):
-    if abs(classes[i] - results[i]) > 0.5:
-        wrongs.append((classes[i], results[i], texts[i]))
-
-import csv
-writer = open('wrongs.csv', 'w')
-for w in wrongs:
-    writer.write('%s,%s,%s\n' % w)
-writer.close()
+# import csv
+# writer = open('wrongs.csv', 'w')
+# for w in wrongs:
+#     writer.write('%s,%s,%s\n' % w)
+# writer.close()
 
